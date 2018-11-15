@@ -2,13 +2,6 @@
 #include <fstream>
 #include <string>
 #include <cmath>
-/**
- * The program reads numbers from line file and prints the sum of them
- * Example: main.exe ./tests/input.in
- * @param  argc [description]
- * @param  argv [description]
- * @return      [description]
- */
 
 // Checks if text contains '-' or '.' and is a valid number
 bool ValidNumber(std::string inputToCheck);
@@ -19,20 +12,21 @@ int main(int argc, const char *argv[])
 {
     std::ifstream myReadFile;
     myReadFile.open(argv[1]);
+
     if (myReadFile)
     {
-        std::string a = "";
+        std::string line = "";
 
         int arraySize = 0;
         float sum = 0;
         float *numbersArr = new float[arraySize];
         bool textGood = true;
 
-        while ((myReadFile >> a) && textGood)
+        while ((myReadFile >> line) && textGood)
         {
-            if (ValidNumber(a))
+            if (ValidNumber(line))
             {
-                float tempNumber = stof(a);
+                float tempNumber = stof(line); // Converts text to float
                 arraySize++;
                 float *tempArray = new float[arraySize];
                 tempNumber = RoundThreeDecimals(tempNumber);
