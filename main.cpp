@@ -3,74 +3,85 @@
 #include <string>
 #include <cmath>
 
-// Checks if text contains '-' or '.' and is a valid number
+/*
+    Assignment: A1
+    Description: Reads numbers from a file then calculates and 
+    print the numbers that are above the average.
+*/
+
+// Checks if text contains characters '-' or '.' and is a valid number
 bool ValidNumber(std::string inputToCheck);
 
 float RoundThreeDecimals(float nrToRound);
 
 int main(int argc, const char *argv[])
 {
-    std::ifstream myReadFile;
-    myReadFile.open(argv[1]);
-
-    if (myReadFile)
+    // Check if enough arguments before proceeding
+    if (argc > 1)
     {
-        std::string line = "";
+        std::ifstream myReadFile;
+        myReadFile.open(argv[1]);
 
-        int arraySize = 0;
-        float sum = 0;
-        float *numbersArr = new float[arraySize];
-        bool textGood = true;
-
-        while ((myReadFile >> line) && textGood)
+        if (myReadFile)
         {
-            if (ValidNumber(line))
-            {
-                float tempNumber = stof(line); // Converts text to float
-                arraySize++;
-                float *tempArray = new float[arraySize];
-                tempNumber = RoundThreeDecimals(tempNumber);
+            std::string line = "";
 
-                for (int i = 0; i < (arraySize - 1); i++)
+            int arraySize = 0;
+            float sum = 0;
+            float *numbersArr = new float[arraySize];
+            bool textGood = true;
+
+            while ((myReadFile >> line) && textGood)
+            {
+                // Check if the text is a valid number before converting
+                if (ValidNumber(line))
                 {
-                    tempArray[i] = numbersArr[i];
-                }
+                    float tempNumber = stof(line); // Converts text to float
+                    arraySize++;
+                    float *tempArray = new float[arraySize];
+                    tempNumber = RoundThreeDecimals(tempNumber);
 
-                tempArray[arraySize - 1] = tempNumber;
-
-                delete[] numbersArr;
-                numbersArr = nullptr;
-
-                numbersArr = tempArray;
-                sum += tempNumber;
-            }
-            else
-            {
-                textGood = false;
-            }
-        }
-
-        myReadFile.close();
-        if (textGood)
-        {
-            if (arraySize > 0)
-            {
-                float average = sum / arraySize;
-                for (int i = 0; i < arraySize; i++)
-                {
-                    if (numbersArr[i] > average)
+                    for (int i = 0; i < (arraySize - 1); i++)
                     {
-                        std::cout << numbersArr[i] << " ";
+                        tempArray[i] = numbersArr[i];
+                    }
+
+                    tempArray[arraySize - 1] = tempNumber;
+
+                    delete[] numbersArr;
+                    numbersArr = nullptr;
+
+                    numbersArr = tempArray;
+                    sum += tempNumber;
+                }
+                else
+                {
+                    textGood = false;
+                }
+            }
+
+            myReadFile.close();
+            if (textGood)
+            {
+                if (arraySize > 0)
+                {
+                    float average = sum / arraySize;
+                    for (int i = 0; i < arraySize; i++)
+                    {
+                        if (numbersArr[i] > average)
+                        {
+                            std::cout << numbersArr[i] << " ";
+                        }
                     }
                 }
+                getchar();
             }
-            getchar();
-        }
 
-        if (numbersArr != nullptr)
-        {
-            delete[] numbersArr;
-            numbersArr = nullptr;
+            if (numbersArr != nullptr)
+            {
+                delete[] numbersArr;
+                numbersArr = nullptr;
+            }
         }
     }
     return 0;
